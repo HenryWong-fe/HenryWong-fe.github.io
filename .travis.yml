@@ -1,0 +1,32 @@
+language: node_js
+node_js: stable
+
+# S: Build Lifecycle
+install:
+  - npm install
+
+
+before_install:
+  # - export TZ='Asia/Shanghai'  # 设置时区
+  # - npm install -g hexo
+  # - npm install -g hexo-cli
+
+script:
+  - hexo g
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "leo-wj910729"
+  - git config user.email "390758989@qq.com"
+  - git add .
+  - git commit -m "Update files"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
+# E: Build LifeCycle
+
+branches:
+  only:
+    - blog-source
+env:
+ global:
+   - GH_REF: github.com/leo-wj910729/leo-wj910729.github.io.git
