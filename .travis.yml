@@ -1,5 +1,5 @@
 language: node_js
-node_js: stable
+node_js: "8.9.3"
 
 # S: Build Lifecycle
 install:
@@ -7,12 +7,13 @@ install:
 
 
 before_install:
-  # - export TZ='Asia/Shanghai'  # 设置时区
-  # - npm install -g hexo
-  # - npm install -g hexo-cli
+  - export TZ='Asia/Shanghai'  # 设置时区
+  - npm install -g hexo
+  - npm install -g hexo-cli
 
 script:
-  - hexo g
+  - hexo clean
+  - hexo generate
 
 after_script:
   - cd ./public
