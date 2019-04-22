@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>林中小屋</title>
+  
+  <subtitle>宁静致远</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://leo-wj910729.github.io/"/>
+  <updated>2019-04-21T10:53:50.762Z</updated>
+  <id>https://leo-wj910729.github.io/</id>
+  
+  <author>
+    <name>henry Wang</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>个人</title>
+    <link href="https://leo-wj910729.github.io/2019/04/21/axios/"/>
+    <id>https://leo-wj910729.github.io/2019/04/21/axios/</id>
+    <published>2019-04-21T04:47:25.000Z</published>
+    <updated>2019-04-21T10:53:50.762Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --&gt;&lt;!-- rebuild by neat --&gt;
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>从创建到发布-hexo的文章编写发布流程</title>
+    <link href="https://leo-wj910729.github.io/2019/04/21/hexo-deploy/"/>
+    <id>https://leo-wj910729.github.io/2019/04/21/hexo-deploy/</id>
+    <published>2019-04-21T04:22:41.955Z</published>
+    <updated>2019-04-21T10:49:44.538Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --><p>这是一段描述</p><a id="more"></a><h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="创建一篇文章"><a href="#创建一篇文章" class="headerlink" title="创建一篇文章"></a>创建一篇文章</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"一篇新的文章"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="运行hexo服务"><a href="#运行hexo服务" class="headerlink" title="运行hexo服务"></a>运行hexo服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="生成静态文件"><a href="#生成静态文件" class="headerlink" title="生成静态文件"></a>生成静态文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="发布静态博客"><a href="#发布静态博客" class="headerlink" title="发布静态博客"></a>发布静态博客</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      &lt;!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --&gt;&lt;p&gt;这是一段描述&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="学习" scheme="https://leo-wj910729.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="hexo" scheme="https://leo-wj910729.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker基础知识</title>
+    <link href="https://leo-wj910729.github.io/2018/05/16/dcoker-base/"/>
+    <id>https://leo-wj910729.github.io/2018/05/16/dcoker-base/</id>
+    <published>2018-05-16T06:18:32.000Z</published>
+    <updated>2019-04-22T01:12:48.344Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --><hr><h3 id="docker的核心"><a href="#docker的核心" class="headerlink" title="docker的核心"></a>docker的核心</h3><hr><h4 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h4><p>&#8195;可以理解为一个只读的文件包，其中包含了虚拟环境运行最原始文件系统的内容。<br>&#8195;每次对镜像的修改都会产生一个新的镜像层,该镜像层基于修改前的镜像。<br>&#8195;镜像内存储的是不可变的文件。</p><h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>&#8195;用于隔离虚拟环境的基础设施。<br>&#8195;如果将镜像比作类,那么容器就是类的实例<br>&#8195;容器是活的空间,内部文件可变</p><h4 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h4><p>&#8195;利用一些技术,DOcker能够在容器中营造出独立的域名解析环境,这意味着我们不需要付出任何代价就可以创造出同一环境的容器<br>&#8195;两台物理机上的docker容器,可以加入同一个虚拟网络中</p><h4 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h4><p>&#8195;可以挂载在宿主操作系统中的目录上<br>&#8195;容器内建立独立的目录持久存放数据<br>&#8195;容器间共享</p><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --&gt;&lt;hr&gt;&lt;h3 id=&quot;docker的核心&quot;&gt;&lt;a href=&quot;#docker的核心&quot; class=&quot;headerlink&quot; title=&quot;docke
+      
+    
+    </summary>
+    
+    
+      <category term="docker" scheme="https://leo-wj910729.github.io/tags/docker/"/>
+    
+  </entry>
+  
+</feed>
