@@ -6,30 +6,178 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://leo-wj910729.github.io/"/>
-  <updated>2019-04-21T10:53:50.762Z</updated>
+  <updated>2019-04-25T11:06:28.918Z</updated>
   <id>https://leo-wj910729.github.io/</id>
   
   <author>
-    <name>henry Wang</name>
+    <name>Henry Wang</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>个人</title>
-    <link href="https://leo-wj910729.github.io/2019/04/21/axios/"/>
-    <id>https://leo-wj910729.github.io/2019/04/21/axios/</id>
-    <published>2019-04-21T04:47:25.000Z</published>
-    <updated>2019-04-21T10:53:50.762Z</updated>
+    <title>函数的节流</title>
+    <link href="https://leo-wj910729.github.io/2019/02/13/throttle/"/>
+    <id>https://leo-wj910729.github.io/2019/02/13/throttle/</id>
+    <published>2019-02-12T16:00:00.000Z</published>
+    <updated>2019-04-25T11:06:28.918Z</updated>
     
-    <content type="html"><![CDATA[<!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --><!-- rebuild by neat -->]]></content>
+    <content type="html"><![CDATA[<!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --><h3>定义</h3><p>当持续触发事件时,在规定的时间内只触发一次,如果在规定的时间内再次触发事件,则不做任何操作</p><h3>应用场景</h3><p>监听是否滚动到底部,而触发上拉加载</p><h3>原理</h3><ol><li>时间戳形式,通过闭包保存上一次的时间戳,将其与事件触发时的时间戳进行比较,如果差值大于设定的时间,则调用事件,并记录时间戳,否则不进行任何操作</li><li>定时器形式,通过闭包保存定时器,事件触发时,如果定时器为null,则执行cb,并设置新的定时器</li></ol><h3>实现方法</h3><ol><li><p>时间戳形式</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span> (<span class="params">cb, delay = <span class="number">16</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> prevTime = <span class="number">0</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> now = <span class="built_in">Date</span>.now()</span><br><span class="line">    <span class="keyword">let</span> that = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">let</span> _args = args</span><br><span class="line">    <span class="keyword">if</span> (now &gt; prevTime + delay) &#123;</span><br><span class="line">      fun.apply(that, _args)</span><br><span class="line">      prevTime = now</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p></li><li><p>定时器形式</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span> (<span class="params">cb, delay = <span class="number">16</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> that = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">let</span> _args = args</span><br><span class="line">    <span class="keyword">if</span> (!timer) &#123;</span><br><span class="line">      timer = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        timer = <span class="literal">null</span></span><br><span class="line">        cb.apply(that, _args)</span><br><span class="line">      &#125;,delay)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p></li><li><p>时间戳加定时器的形式</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span> (<span class="params">cb, delay = <span class="number">16</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">let</span> prevTime = <span class="number">0</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> that = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">let</span> _args = args</span><br><span class="line">    <span class="keyword">let</span> now = <span class="built_in">Date</span>.now()</span><br><span class="line">    <span class="keyword">let</span> tag = delay - (now - prevTime)</span><br><span class="line">    clearTimeout(timer)</span><br><span class="line">    <span class="keyword">if</span> (tag &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      cb.apply(that, delay)</span><br><span class="line">      prevTime = <span class="built_in">Date</span>.now()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      timer = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        cb.apply(that, delay)</span><br><span class="line">      &#125;, ta)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p></li></ol><!-- rebuild by neat -->]]></content>
     
     <summary type="html">
     
       
       
-        &lt;!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --&gt;&lt;!-- rebuild by neat --&gt;
+        &lt;!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --&gt;&lt;h3&gt;定义&lt;/h3&gt;&lt;p&gt;当持续触发事件时,在规定的时间内只触发一次,如果在规定的时间内再次触发事件,则不做任何操作&lt;/p&gt;&lt;h3&gt;应用场景&lt;/h3
+      
+    
+    </summary>
+    
+      <category term="学习" scheme="https://leo-wj910729.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="function" scheme="https://leo-wj910729.github.io/tags/function/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git的基础操作指令</title>
+    <link href="https://leo-wj910729.github.io/2019/02/13/git-base/"/>
+    <id>https://leo-wj910729.github.io/2019/02/13/git-base/</id>
+    <published>2019-02-12T16:00:00.000Z</published>
+    <updated>2019-04-24T03:01:43.090Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --><h2>全局配置</h2><h3>Git操作</h3><ol><li><p>配置全局信息</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">"henry"</span></span><br><span class="line">$ git config --global user.email henry@example.com</span><br><span class="line">$ git config --global <span class="built_in">alias</span>.&lt;<span class="built_in">alias</span>-name&gt; &lt;命令名&gt; // 设置别名 如 git ci 等价于 git commit</span><br></pre></td></tr></table></figure><p></p></li><li><p>初始化本地仓库</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure><p></p></li><li><p>查询当前文件状态</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br></pre></td></tr></table></figure><p></p></li><li><p>添加文件到git暂存区</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git add 文件名</span><br><span class="line">$ git add . // 添加所有文件到暂存区</span><br></pre></td></tr></table></figure><p></p></li><li><p>提交暂存区文件到git本地仓库</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">'提交信息'</span></span><br><span class="line">$ git commit --amend // 重新提交</span><br></pre></td></tr></table></figure><p></p></li><li><p>撤销暂存区文件</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD 文件名</span><br></pre></td></tr></table></figure><p></p></li><li><p>查看远程仓库</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git remote</span><br><span class="line">$ git remote -v // 显示需要读写远程仓库使用的 Git 保存的简写与其对应的 URL</span><br></pre></td></tr></table></figure><p></p></li><li><p>添加远程仓库</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add &lt;remote-name&gt; &lt;url&gt; // 添加一个新的远程Git仓库</span><br></pre></td></tr></table></figure><p></p></li><li><p>拉去远程仓库到本地</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch &lt;remote-name&gt;</span><br></pre></td></tr></table></figure><p></p></li><li><p>推送到远程仓库</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull &lt;remote-name&gt; &lt;branch-name&gt;</span><br></pre></td></tr></table></figure><p></p></li><li><p>修改远程仓库名称</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote rename &lt;remote-name&gt; &lt;new-remote-name&gt;</span><br></pre></td></tr></table></figure><p></p></li><li><p>删除远程仓库</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote rm &lt;remote-name&gt;</span><br></pre></td></tr></table></figure><p></p></li><li><p>查看所有标签</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git tag</span><br><span class="line">$ git tag -l <span class="string">'搜索词'</span></span><br></pre></td></tr></table></figure><p></p></li><li><p>创建标签</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git tag  &lt;tag-name&gt; // 创建一个轻量标签</span><br><span class="line">$ git tag -a &lt;tag-name&gt; -m <span class="string">'存储在标签中的信息'</span> // -a 创建一个携带标签信息的标签 -m 标签信息</span><br><span class="line">$ git tag -a &lt;tag-name&gt; 提交的校验和（或部分校验和） // 给过去的提交打标签</span><br></pre></td></tr></table></figure><p></p></li><li><p>将标签推送到远程</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git push &lt;remote-name&gt; &lt;tag-name&gt; // 推送一个tag到远端</span><br><span class="line">$ git push &lt;remote-name&gt; --tags // 推送多个tag到远端</span><br></pre></td></tr></table></figure><p></p></li><li><p>删除标签</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -d &lt;tag-name&gt; // 本地删除一个指定的tag</span><br><span class="line">$ git push &lt;remote-name&gt; :refs/tags/&lt;tag-name&gt; // 远端删除一个指定的tag</span><br></pre></td></tr></table></figure><p></p></li><li><p>检出标签</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout &lt;tag-name&gt; // 将指针指向指定的tag</span><br><span class="line">$ git checkout &lt;tag-name&gt; // 将指针指向指定的tag</span><br></pre></td></tr></table></figure><p></p></li></ol><h3>分支操作</h3><ol><li><p>创建分支</p></li><li><p>删除分支</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git brach -d</span><br></pre></td></tr></table></figure><p></p></li><li><p>查询分支</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br></pre></td></tr></table></figure><p></p></li></ol><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --&gt;&lt;h2&gt;全局配置&lt;/h2&gt;&lt;h3&gt;Git操作&lt;/h3&gt;&lt;ol&gt;&lt;li&gt;&lt;p&gt;配置全局信息&lt;/p&gt;&lt;figure class=&quot;highlight ba
+      
+    
+    </summary>
+    
+      <category term="学习" scheme="https://leo-wj910729.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="git" scheme="https://leo-wj910729.github.io/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>函数的防抖</title>
+    <link href="https://leo-wj910729.github.io/2019/02/13/dounce/"/>
+    <id>https://leo-wj910729.github.io/2019/02/13/dounce/</id>
+    <published>2019-02-12T16:00:00.000Z</published>
+    <updated>2019-04-25T09:10:13.479Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --><h3>定义</h3><p>触发时间后的一段时间内,该事件的回调函数仅会触发一次,如果在规定时间内再次触发该事件,则重新开始计算时间 游戏理解: 法师读条法术,进度条未读完再次释放则会打断上次施法</p><h3>应用场景</h3><ol><li>用户连续操作导致事件频发触发回调</li><li>用户只关系操作之后的结果(滚动条啊,搜索输入啊,这种)</li></ol><h3>原理</h3><p>通过定时器将回调函数进行延时,在规定时间内继续回调,发现存在之前的定时器时,清空该定时器并重新设置新的定时器</p><h3>实现方法</h3><ol><li><p>非立即执行版本: 事件触发=&gt; 延时=&gt; 执行回调函数 在延时中触发事件,则会重新进行延时,延时结束后执行回调函数</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span> (<span class="params">cb, delay = <span class="number">16</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> that = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">let</span> _args = args</span><br><span class="line">    clearTimeout(cb.timer)</span><br><span class="line">    cb.timer = setTimout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      cb.call(that, _args)</span><br><span class="line">    &#125;, delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cb</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'这是一个回调函数'</span>, <span class="built_in">arguments</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> debounceFn = debounce(cb)</span><br><span class="line"><span class="keyword">let</span> input = <span class="built_in">document</span>.getElementById(<span class="string">'test-input'</span>)</span><br><span class="line">input.addEventListener(<span class="string">'keyup'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  debounceFn(e.target.value)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p></p></li><li><p>立即执行版本: 事件触发=&gt; 执行回调函数=&gt; 延时 在延时中触发事件,则会重新进行延时,延时结束,并不会执行回调函数</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span> (<span class="params">cb, immediate = true, delay = <span class="number">16</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> that = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">let</span> _args = args</span><br><span class="line">    <span class="keyword">if</span> (timer) clearTimeout(timer)</span><br><span class="line">    <span class="keyword">if</span> (immediate) &#123;</span><br><span class="line">      <span class="keyword">if</span>(!timer) cb.apply(that, args)</span><br><span class="line">      timer = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        timer = <span class="literal">null</span></span><br><span class="line">      &#125;, delay)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      timer = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        cb.apply(that, args)</span><br><span class="line">      &#125;,delay)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p></li></ol><p>// 防抖就是在一段时间内如果没有操作,则执行函数,如果有操作,则清除定时器重新执行 // 节流就是在一段时间内只会触发一次函数操作</p><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --&gt;&lt;h3&gt;定义&lt;/h3&gt;&lt;p&gt;触发时间后的一段时间内,该事件的回调函数仅会触发一次,如果在规定时间内再次触发该事件,则重新开始计算时间 游戏理解: 法师
+      
+    
+    </summary>
+    
+      <category term="学习" scheme="https://leo-wj910729.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="function" scheme="https://leo-wj910729.github.io/tags/function/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>快速排序</title>
+    <link href="https://leo-wj910729.github.io/2018/04/11/algorithm-quicksort/"/>
+    <id>https://leo-wj910729.github.io/2018/04/11/algorithm-quicksort/</id>
+    <published>2018-04-10T16:00:00.000Z</published>
+    <updated>2019-04-24T02:59:37.759Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --><hr><h2>算法介绍</h2><h3>1.1 算法描述</h3><p>快速排序因为时间复杂度较低,且其核心思想分治法实用性强,算法难度不高,使其流行度较高</p><h3>1.2 算法步骤</h3><ol><li>从数组中取出一个数作为基数</li><li>对数组进行遍历,将大于该数的数放在基数的右边,小于该数的放在基数的左边</li><li>对左侧和右侧的数组继续进行上述操作,直至左右侧只有一位数</li></ol><h3>1.3 算法实现</h3><p></p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">funtion quickSort (arr) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!arr.isArray) <span class="keyword">return</span> []</span><br><span class="line">  <span class="keyword">if</span> (!arr.length) <span class="keyword">return</span> []</span><br><span class="line">  <span class="keyword">let</span> baseIndex = <span class="built_in">Math</span>.floor(arr.length / <span class="number">2</span>)</span><br><span class="line">  <span class="keyword">let</span> baseNumber = arr.splice(baseIndex, <span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">  <span class="keyword">let</span> left = []</span><br><span class="line">  <span class="keyword">let</span> right = []</span><br><span class="line">  arr.forEach(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (item &lt; baseNumber) left.push(item)</span><br><span class="line">    <span class="keyword">else</span> right.push(item)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> quickSort(left).concat(baseNumber,quickSort(right))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --&gt;&lt;hr&gt;&lt;h2&gt;算法介绍&lt;/h2&gt;&lt;h3&gt;1.1 算法描述&lt;/h3&gt;&lt;p&gt;快速排序因为时间复杂度较低,且其核心思想分治法实用性强,算法难度不高,使其流
+      
+    
+    </summary>
+    
+      <category term="学习" scheme="https://leo-wj910729.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="algorithm" scheme="https://leo-wj910729.github.io/tags/algorithm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>希尔排序</title>
+    <link href="https://leo-wj910729.github.io/2018/04/11/algorithm-shellsort/"/>
+    <id>https://leo-wj910729.github.io/2018/04/11/algorithm-shellsort/</id>
+    <published>2018-04-10T16:00:00.000Z</published>
+    <updated>2019-04-24T06:05:14.887Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --><hr><h2>算法介绍</h2><h3>1.1 算法描述</h3><p>希尔排序是建立在插入排序上的改进排序方法,对排序情况较好的序列排序时,能够达到较好的排序效率</p><h3>1.2 算法步骤</h3><ol><li>选择一个增量序列,t1, t2, ....,tj,tk 依次减少,最小为1</li><li>按照增量序列的个数,对序列进行k次排序</li><li>每次排序根据对应的增量ti,将待排序列分割成若干长度为m的子序列,分别对各子表进行直接插入排序.</li></ol><h3>1.3 算法实现</h3><p></p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">funtion shellSort (arr) &#123;</span><br><span class="line">  <span class="keyword">let</span> len = arr.length</span><br><span class="line">  <span class="keyword">let</span> temp</span><br><span class="line">  <span class="keyword">let</span> gap = <span class="number">1</span></span><br><span class="line">  <span class="keyword">while</span> (gap &lt; len / <span class="number">2</span>) &#123;</span><br><span class="line">    gap = gap * <span class="number">2</span> + <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (;gap &gt; <span class="number">0</span>; gap = <span class="built_in">Math</span>.floor(gap/<span class="number">2</span>)) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = gap; i &lt; len; i++) &#123;</span><br><span class="line">      temp = arr[i] <span class="comment">// 按照步进值取出对应的分块数据 arr[2]和arr[0]配对 依次类推   </span></span><br><span class="line">      <span class="comment">// 该gap值下所分的组进行插值排序</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> j = i-gap; j &gt;= <span class="number">0</span> &amp;&amp; arr[j] &gt; temp; j -= gap) &#123;</span><br><span class="line">        <span class="comment">// arr[j] &gt; arr[i] 前值大于后值</span></span><br><span class="line">        arr[j+gap] = arr[j] <span class="comment">// 将前值赋值给后值</span></span><br><span class="line">      &#125;</span><br><span class="line">      arr[j+gap] = temp <span class="comment">//</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --&gt;&lt;hr&gt;&lt;h2&gt;算法介绍&lt;/h2&gt;&lt;h3&gt;1.1 算法描述&lt;/h3&gt;&lt;p&gt;希尔排序是建立在插入排序上的改进排序方法,对排序情况较好的序列排序时,能够达
+      
+    
+    </summary>
+    
+      <category term="学习" scheme="https://leo-wj910729.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="algorithm" scheme="https://leo-wj910729.github.io/tags/algorithm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker基础知识</title>
+    <link href="https://leo-wj910729.github.io/2018/03/26/dcoker-base/"/>
+    <id>https://leo-wj910729.github.io/2018/03/26/dcoker-base/</id>
+    <published>2018-03-25T16:00:00.000Z</published>
+    <updated>2019-04-24T03:00:58.466Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --><hr><h3>docker的核心</h3><hr><h4>镜像</h4><p>可以理解为一个只读的文件包，其中包含了虚拟环境运行最原始文件系统的内容。  每次对镜像的修改都会产生一个新的镜像层,该镜像层基于修改前的镜像。  镜像内存储的是不可变的文件。</p><h4>容器</h4><p>用于隔离虚拟环境的基础设施。  如果将镜像比作类,那么容器就是类的实例  容器是活的空间,内部文件可变</p><h4>网络</h4><p>利用一些技术,DOcker能够在容器中营造出独立的域名解析环境,这意味着我们不需要付出任何代价就可以创造出同一环境的容器  两台物理机上的docker容器,可以加入同一个虚拟网络中</p><h4>数据卷</h4><p>可以挂载在宿主操作系统中的目录上  容器内建立独立的目录持久存放数据  容器间共享</p><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --&gt;&lt;hr&gt;&lt;h3&gt;docker的核心&lt;/h3&gt;&lt;hr&gt;&lt;h4&gt;镜像&lt;/h4&gt;&lt;p&gt;可以理解为一个只读的文件包，其中包含了虚拟环境运行最原始文件系统的内容
+      
+    
+    </summary>
+    
+    
+      <category term="docker" scheme="https://leo-wj910729.github.io/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker-volume 数据卷</title>
+    <link href="https://leo-wj910729.github.io/2018/03/21/docker-volume/"/>
+    <id>https://leo-wj910729.github.io/2018/03/21/docker-volume/</id>
+    <published>2018-03-20T16:00:00.000Z</published>
+    <updated>2019-04-24T03:00:50.962Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --><h2>数据卷的几种形态</h2><h3>不使用数据卷</h3><blockquote><p>默认情况下docker容器不使用任何volume,此时,容器的数据被保存在容器中,当容器被删除时,数据也被删除,我们可以使用docker commit 将该容器持久化为一个镜像</p></blockquote><h3>Data volume (数据卷)</h3><ol><li><p>使用&quot;-v 容器内目录&quot;形式,将本地一个_data目录挂载为容器内的webapp目录</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P --name web -v /webapp training/webapp python app.py</span><br><span class="line">$ docker inspect </span><br><span class="line">$ <span class="string">"Mounts"</span>: [</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="string">"Name"</span>: <span class="string">"f143b7f379fb6d012a08656fc950bf6df4bf5a5b90c72f310644aa997620122b"</span>,</span><br><span class="line">      <span class="string">"Source"</span>: <span class="string">"/var/lib/docker/volumes/f143b7f379fb6d012a08656fc950bf6df4bf5a5b90c72f310644aa997620122b/_data"</span>,</span><br><span class="line">      <span class="string">"Destination"</span>: <span class="string">"/webapp"</span>,</span><br><span class="line">      <span class="string">"Driver"</span>: <span class="string">"local"</span>,</span><br><span class="line">      <span class="string">"Mode"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="string">"RW"</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">"Propagation"</span>: <span class="string">""</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure><p></p></li><li><p>使用-v挂载主机上的一个文件到容器内的一个文件</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --rm -it -v ~/.bash_history:/root/.bash_history ubuntu /bin/bash</span><br></pre></td></tr></table></figure><p></p></li></ol><h3>Data container (容器数据卷)</h3><p>在容器间共享数据,可以使用容器来进行数据的存储,这样的容器不会跑应用,而仅仅是挂载一个数据卷</p><blockquote><p><strong>缺点:</strong> 容器可以被删除 <strong>优点:</strong> 可以持续重复的使用数据</p></blockquote><p></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ 创建一个数据卷容器</span><br><span class="line">$ docker create -v /dbdata --name dbstore training/webapp  /bin/<span class="literal">true</span></span><br><span class="line">$ 运行数据卷容器</span><br><span class="line">$ docker run -d -P --name web3 --volumes-from dbstore training/webapp python app.py</span><br><span class="line">$ docker inspect</span><br><span class="line">$ <span class="string">"Mounts"</span>: [</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="string">"Name"</span>: <span class="string">"5341c03f3b94f13f4c86d88ccb0f3b63487adf30dea7ae6b2d06e947235e7330"</span>,</span><br><span class="line">      <span class="string">"Source"</span>: <span class="string">"/var/lib/docker/volumes/5341c03f3b94f13f4c86d88ccb0f3b63487adf30dea7ae6b2d06e947235e7330/_data"</span>,</span><br><span class="line">      <span class="string">"Destination"</span>: <span class="string">"/dbdata"</span>,</span><br><span class="line">      <span class="string">"Driver"</span>: <span class="string">"local"</span>,</span><br><span class="line">      <span class="string">"Mode"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="string">"RW"</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">"Propagation"</span>: <span class="string">""</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure><p></p><h3>使用docker volume命令</h3><ol><li><p>创建数据卷</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume create --name 数据卷名</span><br><span class="line">$ docker volume inspect 数据卷名</span><br></pre></td></tr></table></figure><p></p></li><li><p>使用数据卷</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P --name 容器名 -v 数据卷名:/volume training/webapp python app.p</span><br></pre></td></tr></table></figure><p></p></li></ol><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --&gt;&lt;h2&gt;数据卷的几种形态&lt;/h2&gt;&lt;h3&gt;不使用数据卷&lt;/h3&gt;&lt;blockquote&gt;&lt;p&gt;默认情况下docker容器不使用任何volume,此时,
       
     
     </summary>
@@ -39,16 +187,19 @@
   
   <entry>
     <title>从创建到发布-hexo的文章编写发布流程</title>
-    <link href="https://leo-wj910729.github.io/2019/04/21/hexo-deploy/"/>
-    <id>https://leo-wj910729.github.io/2019/04/21/hexo-deploy/</id>
-    <published>2019-04-21T04:22:41.955Z</published>
-    <updated>2019-04-21T10:49:44.538Z</updated>
+    <link href="https://leo-wj910729.github.io/2018/02/11/hexo-deploy/"/>
+    <id>https://leo-wj910729.github.io/2018/02/11/hexo-deploy/</id>
+    <published>2018-02-10T16:00:00.000Z</published>
+    <updated>2019-04-24T03:01:10.795Z</updated>
     
-    <content type="html"><![CDATA[<!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --><p>这是一段描述</p><a id="more"></a><h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="创建一篇文章"><a href="#创建一篇文章" class="headerlink" title="创建一篇文章"></a>创建一篇文章</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"一篇新的文章"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="运行hexo服务"><a href="#运行hexo服务" class="headerlink" title="运行hexo服务"></a>运行hexo服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="生成静态文件"><a href="#生成静态文件" class="headerlink" title="生成静态文件"></a>生成静态文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="发布静态博客"><a href="#发布静态博客" class="headerlink" title="发布静态博客"></a>发布静态博客</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p><!-- rebuild by neat -->]]></content>
+    <content type="html"><![CDATA[<!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --><p>这是一段描述</p><p>&lt;!-- more --&gt;</p><h2>快速开始</h2><h3>创建一篇文章</h3><p></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"一篇新的文章"</span></span><br></pre></td></tr></table></figure><p></p><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3>运行hexo服务</h3><p></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p></p><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3>生成静态文件</h3><p></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p></p><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3>发布静态博客</h3><p></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p></p><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p><!-- rebuild by neat -->]]></content>
     
     <summary type="html">
     
-      &lt;!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --&gt;&lt;p&gt;这是一段描述&lt;/p&gt;
+      
+      
+        &lt;!-- build time:Thu Apr 25 2019 20:47:49 GMT+0800 (GMT+08:00) --&gt;&lt;p&gt;这是一段描述&lt;/p&gt;&lt;p&gt;&amp;lt;!-- more --&amp;gt;&lt;/p&gt;&lt;h2&gt;快速开始&lt;/h2&gt;&lt;h3&gt;创建一篇文章&lt;/h3&gt;&lt;p&gt;&lt;/p&gt;&lt;
+      
     
     </summary>
     
@@ -56,29 +207,6 @@
     
     
       <category term="hexo" scheme="https://leo-wj910729.github.io/tags/hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>docker基础知识</title>
-    <link href="https://leo-wj910729.github.io/2018/05/16/dcoker-base/"/>
-    <id>https://leo-wj910729.github.io/2018/05/16/dcoker-base/</id>
-    <published>2018-05-16T06:18:32.000Z</published>
-    <updated>2019-04-22T01:12:48.344Z</updated>
-    
-    <content type="html"><![CDATA[<!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --><hr><h3 id="docker的核心"><a href="#docker的核心" class="headerlink" title="docker的核心"></a>docker的核心</h3><hr><h4 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h4><p>&#8195;可以理解为一个只读的文件包，其中包含了虚拟环境运行最原始文件系统的内容。<br>&#8195;每次对镜像的修改都会产生一个新的镜像层,该镜像层基于修改前的镜像。<br>&#8195;镜像内存储的是不可变的文件。</p><h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>&#8195;用于隔离虚拟环境的基础设施。<br>&#8195;如果将镜像比作类,那么容器就是类的实例<br>&#8195;容器是活的空间,内部文件可变</p><h4 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h4><p>&#8195;利用一些技术,DOcker能够在容器中营造出独立的域名解析环境,这意味着我们不需要付出任何代价就可以创造出同一环境的容器<br>&#8195;两台物理机上的docker容器,可以加入同一个虚拟网络中</p><h4 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h4><p>&#8195;可以挂载在宿主操作系统中的目录上<br>&#8195;容器内建立独立的目录持久存放数据<br>&#8195;容器间共享</p><!-- rebuild by neat -->]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;!-- build time:Mon Apr 22 2019 10:55:00 GMT+0800 (GMT+08:00) --&gt;&lt;hr&gt;&lt;h3 id=&quot;docker的核心&quot;&gt;&lt;a href=&quot;#docker的核心&quot; class=&quot;headerlink&quot; title=&quot;docke
-      
-    
-    </summary>
-    
-    
-      <category term="docker" scheme="https://leo-wj910729.github.io/tags/docker/"/>
     
   </entry>
   
