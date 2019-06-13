@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://leo-wj910729.github.io/2018/03/21/docker-containerToImage/</loc>
+    <lastmod>2019-06-13</lastmod>
+  </url>  <url>
+    <loc>https://leo-wj910729.github.io/2018/03/21/docker-volumeManager/</loc>
+    <lastmod>2019-06-12</lastmod>
+  </url>  <url>
+    <loc>https://leo-wj910729.github.io/2018/03/21/docker-volume/</loc>
+    <lastmod>2019-06-12</lastmod>
+  </url>  <url>
+    <loc>https://leo-wj910729.github.io/2018/03/26/dcoker-base/</loc>
+    <lastmod>2019-06-12</lastmod>
+  </url>  <url>
     <loc>https://leo-wj910729.github.io/2019/06/08/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%BB%9A%E5%8A%A8%E7%A9%BF%E9%80%8F%E9%97%AE%E9%A2%98-md/</loc>
     <lastmod>2019-06-08</lastmod>
   </url>  <url>
@@ -62,12 +74,6 @@
     <lastmod>2019-04-28</lastmod>
   </url>  <url>
     <loc>https://leo-wj910729.github.io/2018/02/11/hexo-deploy/</loc>
-    <lastmod>2019-04-24</lastmod>
-  </url>  <url>
-    <loc>https://leo-wj910729.github.io/2018/03/26/dcoker-base/</loc>
-    <lastmod>2019-04-24</lastmod>
-  </url>  <url>
-    <loc>https://leo-wj910729.github.io/2018/03/21/docker-volume/</loc>
     <lastmod>2019-04-24</lastmod>
   </url>
 </urlset>
